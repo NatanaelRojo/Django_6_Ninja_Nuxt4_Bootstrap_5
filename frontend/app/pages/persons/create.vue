@@ -35,7 +35,7 @@
       </div>
 
       <div class="d-flex justify-content-end gap-2">
-        <NuxtLink to="/users" class="btn btn-secondary">Cancel</NuxtLink>
+        <NuxtLink to="/persons" class="btn btn-secondary">Cancel</NuxtLink>
         <button type="submit" class="btn btn-primary">
           Save
         </button>
@@ -78,7 +78,7 @@ const savePerson = async () => {
     })
 
     // Si todo sale bien, redirigimos a la lista
-    navigateTo('/users')
+    navigateTo('/persons')
 
   } catch (err) {
     console.error('Error saving data:', err)

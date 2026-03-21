@@ -20,7 +20,7 @@
       </div>
 
       <div class="d-flex justify-content-end gap-2">
-        <NuxtLink to="/users" class="btn btn-secondary">Cancel</NuxtLink>
+        <NuxtLink to="/persons" class="btn btn-secondary">Cancel</NuxtLink>
         <button type="submit" class="btn btn-warning text-white">
           Update Changes
         </button>
@@ -60,7 +60,7 @@ const form = ref({
 // Obtenemos los datos de la persona al cargar la página
 // Usamos useFetch para traer los datos apenas carga la página
 const { data: person, pending: pendingFetch } = await useFetch(`${apiBase}/person/${personId}`, {
-  key: `user-${personId}`
+  key: `person-${personId}`
 })
 
 // Sincronizamos los datos recibidos con el formulario
@@ -82,7 +82,7 @@ const updatePerson = async () => {
     })
 
     // Redirigimos de vuelta a la lista de usuarios después de actualizar
-    navigateTo('/users')
+    navigateTo('/persons')
   } catch (err) {
     console.error('Update error:', err)
     alert('Error updating. Check if the ID exists.')

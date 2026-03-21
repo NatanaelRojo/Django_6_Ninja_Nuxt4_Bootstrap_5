@@ -1,11 +1,11 @@
 <template>
   <div>
     <GoBack /> |
-    <NuxtLink to="/users/create">
+    <NuxtLink to="/persons/create">
       <button>Create person</button>
     </NuxtLink>
 
-    <h1>Users List</h1>
+    <h1>Person List</h1>
 
     <div v-if="error" class="alert alert-danger">
       Error al cargar usuarios. Inténtalo de nuevo.
@@ -21,14 +21,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users_list" :key="user.id">
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.age }}</td>
+        <tr v-for="person in persons" :key="person.id">
+          <td>{{ person.name }}</td>
+          <td>{{ person.email }}</td>
+          <td>{{ person.age }}</td>
           <td>
-            <NuxtLink :to="`/users/${user.id}`">Detail</NuxtLink> |
-            <NuxtLink :to="`/users/update/${user.id}`">Update</NuxtLink> |
-            <button @click="deleteUser(user.id, user.name)">
+            <NuxtLink :to="`/persons/${person.id}`">Detail</NuxtLink> |
+            <NuxtLink :to="`/persons/update/${person.id}`">Update</NuxtLink> |
+            <button @click="deletePerson(person.id, person.name)">
               Delete
             </button>
           </td>
@@ -41,6 +41,7 @@
 <script setup>
 // Inicializa el acceso a la variable de entorno para la URL base del backend.
 const config = useRuntimeConfig()
+
 // Ahora 'apiBase' contiene la URL base de la API configurada en el .env
 const apiBase = config.public.apiBase
 
@@ -49,7 +50,7 @@ const loader = useState('loader')
 
 // 2. Configuramos el título de la página
 useHead({
-  title: 'Users',
+  title: 'Person List',
 })
 
 // Simularemos una llamada a la API de Backend usando una API de prueba real
@@ -59,10 +60,10 @@ const { data: response, pending, error, refresh} = await useFetch(`${apiBase}/pe
 })
 
 // 3. Mapeamos los resultados (JSONPlaceholder devuelve un Array directo)
-const users_list = computed(() => response.value || [])
+const persons = computed(() => response.value || [])
 
 // Función para eliminar una persona
-const deleteUser = async (id, name) => {
+const deletePerson = async (id, name) => {
   // 1. Confirmación de seguridad
   if (!confirm(`¿Estás seguro de que deseas eliminar a ${name}?`)) return
 

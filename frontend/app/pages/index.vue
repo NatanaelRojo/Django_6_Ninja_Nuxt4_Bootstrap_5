@@ -15,34 +15,6 @@
       for developers building full-stack JavaScript/Python applications with
       decoupled architecture.
     </p>
-
-    <br>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Test Bootstrap Modal
-    </button>
-
-    <!-- Modal -->
-    <div id="exampleModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
-          </div>
-          <div class="modal-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -59,7 +31,7 @@ onMounted(() => {
 
   setTimeout(() => {
     loader.value = false
-    console.log("Han pasado 3 segundos y quité el loader")
-  }, 3000)
+    console.log("Ha pasado 1 segundo y quité el loader")
+  }, 1000)
 })
 </script>
