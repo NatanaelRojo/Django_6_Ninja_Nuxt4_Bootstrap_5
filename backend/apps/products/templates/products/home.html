@@ -1,7 +1,14 @@
 {% extends 'products/base.html' %}
 
 {% block content %}
-<h1>{{ message }}</h1>
+{% if user.is_authenticated %}
+    ¡Hola! {{ user.username }} ({{ user.email }}) |
+    <a href="{% url 'users:logout' %}">Logout</a>
+{% else %}
+    <a href="{% url 'users:login' %}">Login</a>
+{% endif %}
+<br>
+<br>
 <a href="{% url 'products:create' %}" class="btn btn-primary mb-3">Add Product</a>
 
 <table class="table">

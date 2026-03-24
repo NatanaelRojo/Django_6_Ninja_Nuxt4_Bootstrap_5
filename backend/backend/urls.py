@@ -3,20 +3,25 @@ from django.urls import include, path
 from ninja import NinjaAPI
 # Importamos el router de la app producs
 from apps.products.api import router as products_router
+from django.shortcuts import redirect
 
-# 1. Instanciamos la API
+# Instancia del API
 api = NinjaAPI(title="Mi Proyecto CRUD API")
 
-# 2. Añadimos los routers de cada app (puedes añadir el de products luego)
+# Routers de la app Productos
 api.add_router("/products/", products_router)
 
 urlpatterns = [
-    # Admin route
+    # Ruta para el admin
     path('admin/', admin.site.urls),
 
-    # Tus rutas de templates/vistas tradicionales
-    path('', include('apps.products.urls')),
+    # Redirigir la raíz al login de users
+    path('', lambda request: redirect('users:login'), name='root'),
 
-    # 3. La ruta para TODA la API y su documentación
+    # Tus rutas de las apps
+    path('products/', include('apps.products.urls')),
+    path('users/', include('apps.users.urls')),
+
+    # Ruta para el API
     path("api/", api.urls),
 ]
