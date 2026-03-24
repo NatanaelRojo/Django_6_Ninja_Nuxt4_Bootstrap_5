@@ -1,0 +1,29 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+<h1>{{ message }}</h1>
+<a href="{% url 'products:create' %}" class="btn btn-primary mb-3">Add Product</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>
+                <a href="{% url 'products:detail' product.pk %}" class="btn btn-info">View</a>
+                <a href="{% url 'products:update' product.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'products:delete' product.pk %}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
