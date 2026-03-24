@@ -4,16 +4,16 @@
     <div v-if="pending">Loading details...</div>
     
     <div v-else-if="error">
-      <p>Error: Person with ID: was not found {{ personId }}</p>
+      <p>Error: Products with ID: was not found {{ productId }}</p>
     </div>
 
     <div v-else>
-      <h1>Profile from: {{ person.name }}</h1>
+      <h1>Details</h1>
       <div >
-        <p><strong>Email:</strong> {{ person.email }}</p>
-        <p><strong>Age:</strong> {{ person.age }}</p>
-        <p><strong>Created at:</strong> {{ new Date(person.created_at).toLocaleString() }}</p>
-        <p><strong>Updated at:</strong> {{ new Date(person.updated_at).toLocaleString() }}</p>
+        <p><strong>Name:</strong> {{ product.name }}</p>
+        <p><strong>Price:</strong> {{ product.price }}</p>
+        <p><strong>Created at:</strong> {{ new Date(product.created_at).toLocaleString() }}</p>
+        <p><strong>Updated at:</strong> {{ new Date(product.updated_at).toLocaleString() }}</p>
       </div>
     </div>
   </div>
@@ -32,10 +32,10 @@ useHead({
 
 // Obtenemos el ID desde la URL
 const route = useRoute()
-const personId = route.params.id
+const productId = route.params.id
 
 // Pedimos solo los datos de ese usuario específico
-const { data: person, pending, error } = await useFetch(`${apiBase}/person/${personId}`)
+const { data: product, pending, error } = await useFetch(`${apiBase}/products/${productId}`)
 </script>
 
 <style scoped>

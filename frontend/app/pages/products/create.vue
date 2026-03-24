@@ -1,9 +1,9 @@
 <template>
   <div class="container mt-4">
     <GoBack />
-    <h1 class="mb-4">Register New Person</h1>
+    <h1 class="mb-4">Register Product</h1>
 
-    <form @submit.prevent="savePerson">
+    <form @submit.prevent="saveProduct">
       <div class="mb-3">
         <label class="form-label">Name</label>
         <input
@@ -15,27 +15,17 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Email Address</label>
+        <label class="form-label">Price</label>
         <input
-          v-model="form.email"
-          type="email"
-          class="form-control"
-          required
-        >
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Age</label>
-        <input
-          v-model.number="form.age"
-          type="number"
+          v-model="form.price"
+          type="text"
           class="form-control"
           required
         >
       </div>
 
       <div class="d-flex justify-content-end gap-2">
-        <NuxtLink to="/persons" class="btn btn-secondary">Cancel</NuxtLink>
+        <NuxtLink to="/products" class="btn btn-secondary">Cancel</NuxtLink>
         <button type="submit" class="btn btn-primary">
           Save
         </button>
@@ -55,34 +45,33 @@ const loader = useState('loader')
 
 // Configuramos el título de la página
 useHead({
-  title: 'Register Person',
+  title: 'Register Product',
 })
 
 // Objeto reactivo para el formulario
 const form = ref({
   name: '',
-  email: '',
-  age: null
+  price: ''
 })
 
-// Función para guardar la persona
-const savePerson = async () => {
+// Función para guardar el producto
+const saveProduct = async () => {
   loader.value = true // Activamos el spinner
 
   // Validación simple para asegurarnos de que los campos no estén vacíos
   try {
     // Usamos $fetch para peticiones manuales (POST, PUT, DELETE)
-    await $fetch(`${apiBase}/person/`, {
+    await $fetch(`${apiBase}/products/`, {
       method: 'POST',
       body: form.value
     })
 
     // Si todo sale bien, redirigimos a la lista
-    navigateTo('/persons')
+    navigateTo('/products')
 
   } catch (err) {
     console.error('Error saving data:', err)
-    alert('Failed to save person. Check Django logs.')
+    alert('Failed to save product. Check Django logs.')
   } finally {
     loader.value = false // Apagamos el spinner
   }

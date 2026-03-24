@@ -1,34 +1,32 @@
 <template>
   <div>
     <GoBack /> |
-    <NuxtLink to="/persons/create">
-      <button>Create person</button>
+    <NuxtLink to="/products/create">
+      <button>Create product</button>
     </NuxtLink>
 
-    <h1>Person List</h1>
+    <h1>Product List</h1>
 
     <div v-if="error" class="alert alert-danger">
-      Error al cargar usuarios. Inténtalo de nuevo.
+      Error al cargar productos. Inténtalo de nuevo.
     </div>
 
     <table v-else>
       <thead>
         <tr>
           <th>Name</th>
-          <th>Email</th>
-          <th>Age</th>
+          <th>Price</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="person in persons" :key="person.id">
-          <td>{{ person.name }}</td>
-          <td>{{ person.email }}</td>
-          <td>{{ person.age }}</td>
+        <tr v-for="product in products" :key="product.id">
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}</td>
           <td>
-            <NuxtLink :to="`/persons/${person.id}`">Detail</NuxtLink> |
-            <NuxtLink :to="`/persons/update/${person.id}`">Update</NuxtLink> |
-            <button @click="deletePerson(person.id, person.name)">
+            <NuxtLink :to="`/products/${product.id}`">Detail</NuxtLink> |
+            <NuxtLink :to="`/products/update/${product.id}`">Update</NuxtLink> |
+            <button @click="deleteProduct(product.id, product.name)">
               Delete
             </button>
           </td>
@@ -50,27 +48,27 @@ const loader = useState('loader')
 
 // 2. Configuramos el título de la página
 useHead({
-  title: 'Person List',
+  title: 'Product List',
 })
 
 // Simularemos una llamada a la API de Backend usando una API de prueba real
 // 'pending' es un booleano reactivo que cambia automáticamente
-const { data: response, pending, error, refresh} = await useFetch(`${apiBase}/person/`, {
+const { data: response, pending, error, refresh} = await useFetch(`${apiBase}/products/`, {
   lazy: true
 })
 
 // 3. Mapeamos los resultados (JSONPlaceholder devuelve un Array directo)
-const persons = computed(() => response.value || [])
+const products = computed(() => response.value || [])
 
-// Función para eliminar una persona
-const deletePerson = async (id, name) => {
+// Función para eliminar un producto
+const deleteProduct = async (id, name) => {
   // 1. Confirmación de seguridad
   if (!confirm(`¿Estás seguro de que deseas eliminar a ${name}?`)) return
 
   try {
     loader.value = true // Activamos el spinner
     // 2. Petición DELETE a Django
-    await $fetch(`${apiBase}/person/${id}`, {
+    await $fetch(`${apiBase}/products/${id}`, {
       method: 'DELETE'
     })
 
@@ -79,7 +77,7 @@ const deletePerson = async (id, name) => {
 
   } catch (err) {
     console.error('Error al eliminar:', err)
-    alert('No se pudo eliminar al usuario')
+    alert('No se pudo eliminar el producto')
     loader.value = false // Apagamos el spinner
   } finally {
     loader.value = false // Apagamos el spinner

@@ -9,12 +9,6 @@
       >
       Django 6 + Django Ninja + Nuxt 4 + Bootstrap 5
     </h1>
-    <p>
-      Example project showcasing API consumption from Django 6 + Django Ninja
-      using Nuxt 4 + Bootstrap 5. Built as a reference implementation
-      for developers building full-stack JavaScript/Python applications with
-      decoupled architecture.
-    </p>
   </div>
 </template>
 
