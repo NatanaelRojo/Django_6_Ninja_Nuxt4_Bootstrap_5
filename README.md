@@ -39,18 +39,12 @@ Create your local settings file
 $ cp backend/settings.py_example backend/settings.py
 ```
 
-Run database migrations for the person app
+Run database migrations for the apps and create database
 
 ```
-$ python manage.py makemigrations person
+$ python manage.py makemigrations users products
 
 $ python manage.py migrate
-```
-
-Load sample data
-
-```
-$ python manage.py loaddata person.json
 ```
 
 Start the Django development server

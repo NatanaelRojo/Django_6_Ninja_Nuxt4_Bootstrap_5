@@ -3,6 +3,7 @@ from django.urls import include, path
 from ninja import NinjaAPI
 # Importamos el router de la app producs
 from apps.products.api import router as products_router
+from apps.users.api import router as users_router
 from django.shortcuts import redirect
 
 # Instancia del API
@@ -10,6 +11,7 @@ api = NinjaAPI(title="Mi Proyecto CRUD API")
 
 # Routers de la app Productos
 api.add_router("/products/", products_router)
+api.add_router("/users/", users_router)
 
 urlpatterns = [
     # Ruta para el admin
