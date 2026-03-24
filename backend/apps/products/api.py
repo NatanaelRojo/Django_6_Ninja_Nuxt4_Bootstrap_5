@@ -21,30 +21,35 @@ class ProductCreateSchema(Schema):
 # --- ENDPOINTS (CRUD) ---
 
 @router.get("/", response=List[ProductSchema])
-def list_people(request):
+def list_products(request):
+    """Lista todos los productos de la base de datos"""
     return Product.objects.all()
 
 @router.get("/{product_id}", response=ProductSchema)
-def get_person(request, product_id: int):
+def get_product(request, product_id: int):
+    """Obtiene un producto específico por su ID"""
     product = get_object_or_404(Product, id=product_id)
     return product
 
 @router.post("/", response=ProductSchema)
-def create_person(request, data: ProductCreateSchema):
-    # .dict() convierte el esquema de Pydantic en un diccionario de Python
-    product = Product.objects.create(**data.dict())
+def create_product(request, data: ProductCreateSchema):
+    """Crea un nuevo producto"""
+    # .model_dump() es el reemplazo moderno de .dict() en Pydantic v2
+    product = Product.objects.create(**data.model_dump())
     return product
 
 @router.put("/{product_id}", response=ProductSchema)
-def update_person(request, product_id: int, data: ProductCreateSchema):
+def update_product(request, product_id: int, data: ProductCreateSchema):
+    """Actualiza un producto existente"""
     product = get_object_or_404(Product, id=product_id)
-    for attr, value in data.dict().items():
+    for attr, value in data.model_dump().items():
         setattr(product, attr, value)
     product.save()
     return product
 
 @router.delete("/{product_id}")
-def delete_person(request, product_id: int):
+def delete_product(request, product_id: int):
+    """Elimina un producto de la base de datos"""
     product = get_object_or_404(Product, id=product_id)
     product.delete()
     return {"success": True, "message": f"Product {product_id} deleted successfully"}
