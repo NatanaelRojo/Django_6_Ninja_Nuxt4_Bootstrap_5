@@ -5,13 +5,25 @@
 
     <form v-if="!pendingFetch" @submit.prevent="updateProduct">
       <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input v-model="form.name" type="text" class="form-control" required>
+        <label for="nameInput" class="form-label">Name</label>
+        <input 
+          id="nameInput" 
+          v-model="form.name" 
+          type="text" 
+          class="form-control" 
+          required
+        >
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Price</label>
-        <input v-model="form.price" type="text" class="form-control" required>
+        <label for="priceInput" class="form-label">Price</label>
+        <input 
+          id="priceInput" 
+          v-model="form.price" 
+          type="text" 
+          class="form-control" 
+          required
+        >
       </div>
 
       <div class="d-flex justify-content-end gap-2">
@@ -22,59 +34,49 @@
       </div>
     </form>
     
-    <div v-else class="text-center">
-      <p>Cargando datos del usuario...</p>
+    <div v-else class="text-center" aria-live="polite">
+      <p>Cargando datos del producto...</p>
     </div>
   </div>
 </template>
 
 <script setup>
-// Inicializa el acceso a la variable de entorno para la URL base del backend.
+definePageMeta({
+  middleware: ['auth'],
+})
+
 const config = useRuntimeConfig()
-// Ahora 'apiBase' contiene la URL base de la API configurada en el .env
 const apiBase = config.public.apiBase
-// Llamamos al estado global del loader para mostrar el spinner durante la petición
 const loader = useState('loader')
-// Capturamos el ID del producto desde la URL
 const route = useRoute()
-// Extraemos el ID del usuario de los parámetros de la ruta
 const productId = route.params.id
 
+// 1. Fetch the data securely using our custom courier and useAsyncData
+const { data: product, pending: pendingFetch } = await useAsyncData(`product-update-${productId}`, () => 
+  useApiFetch(`${apiBase}/products/${productId}/`)
+)
+
+// 2. Clean Code: Directly initialize the form with the fetched data
+// The '?.' (optional chaining) safely handles cases where product might be null
 const form = ref({
-  name: '',
-  price: '',
-})
-
-// Usamos useAsyncData para un control más preciso
-const { data: product, pending: pendingFetch } = await useFetch(`${apiBase}/products/${productId}`, {
-  key: `product-detail-${productId}`,
-  // Forzamos a que traiga los datos frescos
-  pick: ['name', 'price'] 
-})
-
-// Sincronización inmediata
-if (product.value) {
-  form.value = { ...product.value }
-}
-
-// Watch por si los datos tardan en llegar (Hydration)
-watch(product, (newVal) => {
-  if (newVal) {
-    form.value.name = newVal.name
-    form.value.price = newVal.price
-  }
+  name: product.value?.name || '',
+  price: product.value?.price || '',
 })
 
 const updateProduct = async () => {
   loader.value = true
   try {
-    await $fetch(`${apiBase}/products/${productId}`, {
+    // 3. Send the PUT request securely with our custom courier
+    await useApiFetch(`${apiBase}/products/${productId}/`, {
       method: 'PUT',
       body: form.value
     })
+    
     await navigateTo('/products')
   } catch (err) {
     console.error('Error:', err)
+    // Optional: Add an alert here so NVDA announces if the update fails
+    alert('No se pudo actualizar el producto.')
   } finally {
     loader.value = false
   }
