@@ -5,8 +5,8 @@
 
     <form @submit.prevent="saveProduct">
       <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input
+        <label for="nameInput" class="form-label">Name</label>
+        <input id="nameInput"
           v-model="form.name"
           type="text"
           class="form-control"
@@ -15,8 +15,8 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Price</label>
-        <input
+        <label for="priceInput" class="form-label">Price</label>
+        <input id="priceInput"
           v-model="form.price"
           type="text"
           class="form-control"
@@ -35,6 +35,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: ['auth'], // Protege esta página con el middleware de autenticación
+})
 // Inicializa el acceso a la variable de entorno para la URL base del backend.
 const config = useRuntimeConfig()
 // Ahora 'apiBase' contiene la URL base de la API configurada en el .env
@@ -61,10 +64,9 @@ const saveProduct = async () => {
   // Validación simple para asegurarnos de que los campos no estén vacíos
   try {
     // Usamos $fetch para peticiones manuales (POST, PUT, DELETE)
-    await $fetch(`${apiBase}/products/`, {
-      method: 'POST',
-      body: form.value
-    })
+await useApiFetch(`${apiBase}/products/${id}`, {
+  method: 'DELETE'
+})
 
     // Si todo sale bien, redirigimos a la lista
     navigateTo('/products')
