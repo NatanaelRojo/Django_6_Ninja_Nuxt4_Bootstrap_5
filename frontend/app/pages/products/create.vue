@@ -64,9 +64,10 @@ const saveProduct = async () => {
   // Validación simple para asegurarnos de que los campos no estén vacíos
   try {
     // Usamos $fetch para peticiones manuales (POST, PUT, DELETE)
-await useApiFetch(`${apiBase}/products/${id}`, {
-  method: 'DELETE'
-})
+    await useApiFetch(`${apiBase}/products/`, {
+      method: 'POST',
+      body: form.value
+    })
 
     // Si todo sale bien, redirigimos a la lista
     navigateTo('/products')
