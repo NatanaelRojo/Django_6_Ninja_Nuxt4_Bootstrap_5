@@ -37,11 +37,26 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: ['auth'], // Protege esta página con el middleware de autenticación
+})
+definePageMeta({
+  middleware: ['auth'], // Protege esta página con el middleware de autenticación
+})
+// const token = useCookie('access_token') // Accede a la cookie 'access_token' para verificar si el usuario está autenticado
 // Inicializa el acceso a la variable de entorno para la URL base del backend.
 const config = useRuntimeConfig()
 
 // Ahora 'apiBase' contiene la URL base de la API configurada en el .env
 const apiBase = config.public.apiBase
+// You don't need to manually read the cookie here anymore
+// You don't need to manually pass the headers anymore
+
+// We simply use useAsyncData combined with our new custom fetcher
+const { data: products, pending, error, refresh } = await useAsyncData('productsData', () => 
+  useApiFetch(`${apiBase}/products/`)
+)
+
 
 // 1. Estado global para controlar el loader
 const loader = useState('loader')
@@ -53,12 +68,15 @@ useHead({
 
 // Simularemos una llamada a la API de Backend usando una API de prueba real
 // 'pending' es un booleano reactivo que cambia automáticamente
-const { data: response, pending, error, refresh} = await useFetch(`${apiBase}/products/`, {
-  lazy: true
-})
+// const { data: response, pending, error, refresh} = await useFetch(`${apiBase}/products/`, {
+//   headers: {
+//     Authorization: token.value ? `Bearer ${token.value}` : '', // Asegura que el token se envíe en cada solicitud
+//   },
+//   lazy: true
+// })
 
 // 3. Mapeamos los resultados (JSONPlaceholder devuelve un Array directo)
-const products = computed(() => response.value || [])
+// const products = computed(() => response.value || [])
 
 // Función para eliminar un producto
 const deleteProduct = async (id, name) => {
@@ -68,9 +86,9 @@ const deleteProduct = async (id, name) => {
   try {
     loader.value = true // Activamos el spinner
     // 2. Petición DELETE a Django
-    await $fetch(`${apiBase}/products/${id}`, {
-      method: 'DELETE'
-    })
+await useApiFetch(`${apiBase}/products/${id}`, {
+  method: 'DELETE'
+})
 
     // 3. Refrescar la lista automáticamente sin recargar la página
     await refresh()
