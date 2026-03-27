@@ -4,7 +4,7 @@
     <div v-if="pending">Loading details...</div>
     
     <div v-else-if="error">
-      <p>Error: Products with ID: was not found {{ productId }}</p>
+      <p>Product with ID {{ productId }} was not found</p>
     </div>
 
     <div v-else>
@@ -27,7 +27,7 @@ const apiBase = config.public.apiBase
 
 // Configuramos el título de la página
 useHead({
-  title: 'User detail',
+  title: 'Product detail',
 })
 
 // Obtenemos el ID desde la URL
@@ -35,8 +35,7 @@ const route = useRoute()
 const productId = route.params.id
 
 // Pedimos solo los datos de ese usuario específico
-const { data: product, pending, error } = await useFetch(`${apiBase}/products/${productId}`)
+const { data: product, pending, error } = await useAsyncData(`product-${productId}`, () => 
+  useApiFetch(`${apiBase}/products/${productId}/`)
+)
 </script>
-
-<style scoped>
-</style>
