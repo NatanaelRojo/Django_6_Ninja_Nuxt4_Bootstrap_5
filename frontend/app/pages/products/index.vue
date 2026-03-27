@@ -1,9 +1,9 @@
 <template>
   <div>
     <GoBack /> |
-    <NuxtLink to="/products/create">
-      <button>Create product</button>
-    </NuxtLink>
+    <NuxtLink to="/products/create" class="btn btn-primary mb-3">
+  Create product
+</NuxtLink>
 
     <h1>Product List</h1>
 
@@ -37,9 +37,6 @@
 </template>
 
 <script setup>
-definePageMeta({
-  middleware: ['auth'], // Protege esta página con el middleware de autenticación
-})
 definePageMeta({
   middleware: ['auth'], // Protege esta página con el middleware de autenticación
 })
