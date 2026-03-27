@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import datetime
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,15 +32,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'corsheaders',
-    'apps.products',
-    'apps.users',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "corsheaders",
+    "ninja_jwt",
+    "ninja_jwt.token_blacklist",
+    "apps.person",
+    "apps.products",
+    "apps.users",
 ]
 
 MIDDLEWARE = [
@@ -148,3 +152,9 @@ AUTH_USER_MODEL = "users.User"
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'users:user_list'
 LOGOUT_REDIRECT_URL = 'users:login'
+
+
+NINJA_JWT = {
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=1),
+}
