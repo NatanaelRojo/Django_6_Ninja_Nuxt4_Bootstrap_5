@@ -20,6 +20,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: ['auth'],
+})
 // Inicializa el acceso a la variable de entorno para la URL base del backend.
 const config = useRuntimeConfig()
 // Ahora 'apiBase' contiene la URL base de la API configurada en el .env
